@@ -22,6 +22,8 @@ import Swal from 'sweetalert2';
 import EditIcon from '@material-ui/icons/Edit';
 import {IconButton} from '@material-ui/core';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import Mock from "Mock/Pokedex.js";
+
 
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
 
@@ -44,10 +46,20 @@ export default function ProfilePage(props) {
     "imagen":""
   });
   const GetPokedex = async ()=>{
-    const resultado = await axios.get(`https://localhost:44313/pokemon/${id}`);
-    SetPokemonSeleccionado(resultado.data);
-    alturaFormateada = new Intl.NumberFormat(["ban", "id"]).format(resultado.data.altura);
-    pesoFormateado= new Intl.NumberFormat(["ban", "id"]).format(resultado.data.peso);
+
+    let ServicioMokeado = true;
+    if(ServicioMokeado)
+    {
+      const resultado = Mock.filter(x=> x.id === id)[0];
+      SetPokemonSeleccionado(resultado);
+    }
+    else{
+      const resultado = await axios.get(`https://localhost:44313/pokemon/${id}`);
+      SetPokemonSeleccionado(resultado.data);
+      alturaFormateada = new Intl.NumberFormat(["ban", "id"]).format(resultado.data.altura);
+      pesoFormateado= new Intl.NumberFormat(["ban", "id"]).format(resultado.data.peso);
+    }
+
 }
 
 const SetTipoIcon = (tipo) =>{
